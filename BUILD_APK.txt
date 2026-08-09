@@ -1,0 +1,12 @@
+Trading Journey Pro Android project
+Starting capital: ₹25,000
+Package: com.raajat.tradingjourney
+Version: 2.0
+
+To build the APK on a computer with Android Studio:
+1. Open this folder in Android Studio.
+2. Let Gradle sync.
+3. Build > Build APK(s).
+4. The debug APK will be in app/build/outputs/apk/debug/.
+
+The app embeds the V2 offline journal and keeps its data in WebView local storage.
