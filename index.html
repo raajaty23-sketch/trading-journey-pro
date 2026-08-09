@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trading Journey Pro</title>
+<style>
+:root{--bg:#09101d;--card:#111b2d;--card2:#17243a;--text:#edf4ff;--muted:#91a1bb;--line:#263650;--blue:#6ea8fe;--green:#35d07f;--red:#ff6473;--yellow:#f4c95d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px system-ui,-apple-system,Segoe UI,sans-serif}header,nav,main{max-width:1150px;margin:auto}header{padding:20px 16px 8px}h1{margin:0;font-size:25px}.sub{color:var(--muted);margin-top:4px}nav{display:flex;gap:8px;padding:10px 16px;overflow:auto}button{border:0;border-radius:9px;padding:10px 13px;background:var(--card2);color:var(--text);font-weight:700;cursor:pointer}button.active{background:var(--blue);color:#061020}.danger{background:#401c26}.good{background:#143c2b}.warn{background:#443718}
+main{padding:8px 16px 40px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px}.label{font-size:12px;color:var(--muted)}.big{font-size:23px;font-weight:850;margin-top:4px}.green{color:var(--green)}.red{color:var(--red)}.yellow{color:var(--yellow)}.section{margin-top:16px}.section h2{font-size:18px;margin:0 0 12px}.form{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}label{display:block;color:var(--muted);font-size:12px;margin-bottom:5px}input,select,textarea{width:100%;background:#0b1425;border:1px solid var(--line);color:var(--text);border-radius:9px;padding:10px;font:inherit}textarea{min-height:80px;resize:vertical}.full{grid-column:1/-1}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.hidden{display:none}.trade{display:flex;justify-content:space-between;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}.trade:last-child{border:0}.pill{display:inline-block;background:var(--card2);border-radius:15px;padding:3px 7px;font-size:11px}.muted{color:var(--muted)}.small{font-size:12px}.meter{height:9px;background:#0a1322;border-radius:9px;overflow:hidden;margin-top:8px}.meter>i{display:block;height:100%;background:var(--blue)}table{width:100%;border-collapse:collapse}th,td{padding:9px;border-bottom:1px solid var(--line);text-align:left;font-size:12px}th{color:var(--muted)}.riskbox{margin-top:12px;padding:12px;background:#0d1728;border-radius:10px}.chart{width:100%;height:220px}.quote{padding:10px;border-left:3px solid var(--blue);background:#0d1728;border-radius:6px;margin-top:8px}
+@media(max-width:780px){.grid{grid-template-columns:repeat(2,1fr)}.form{grid-template-columns:1fr 1fr}}@media(max-width:480px){.form{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}.big{font-size:19px}}
+</style></head><body>
+<header><h1>📊 Trading Journey Pro</h1><div class="sub">Intraday journal • Option buying • MCX • Starting capital ₹25,000</div></header>
+<nav>
+<button class="active" data-tab="dash">Dashboard</button><button data-tab="add">+ Trade</button><button data-tab="calc">Risk Calculator</button><button data-tab="analytics">Analytics</button><button data-tab="review">Daily Review</button>
+</nav><main>
+
+<section id="dash">
+<div class="grid" id="stats"></div>
+<div class="section card"><h2>Equity Curve</h2><canvas id="equity" class="chart"></canvas></div>
+<div class="section card"><h2>Behaviour Scorecard</h2><div id="behaviour"></div></div>
+<div class="section card"><h2>Recent Trades</h2><div id="recent"></div></div>
+</section>
+
+<section id="add" class="hidden"><div class="card"><h2>Record Trade</h2>
+<form id="tradeForm"><div class="form">
+<div><label>Date</label><input type="date" id="date" required></div><div><label>Instrument</label><input id="instrument" placeholder="NIFTY / SBI / CRUDE" required></div>
+<div><label>Type</label><select id="type"><option>Call / Long</option><option>Put / Short</option></select></div>
+<div><label>Entry</label><input type="number" step="any" id="entry" required></div><div><label>Exit</label><input type="number" step="any" id="exit" required></div><div><label>Quantity</label><input type="number" step="any" id="qty" value="1"></div>
+<div><label>Stop Loss</label><input type="number" step="any" id="sl"></div><div><label>Target</label><input type="number" step="any" id="target"></div><div><label>Setup</label><select id="setup"><option>Liquidity Sweep</option><option>VWAP</option><option>BOS / CHOCH</option><option>FVG</option><option>Order Block</option><option>Demand / Supply</option><option>Breakout</option><option>Other</option></select></div>
+<div><label>Emotion</label><select id="emotion"><option>Calm</option><option>Confident</option><option>FOMO</option><option>Fear</option><option>Revenge</option><option>Impatient</option><option>Overconfident</option></select></div>
+<div><label>Plan followed?</label><select id="followed"><option>Yes</option><option>No</option></select></div><div><label>Early exit?</label><select id="early"><option>No</option><option>Yes</option></select></div>
+<div><label>Re-entry after SL?</label><select id="reentry"><option>No</option><option>Yes</option></select></div><div><label>Added lots after loss?</label><select id="added"><option>No</option><option>Yes</option></select></div><div><label>Moved SL?</label><select id="movedsl"><option>No</option><option>Yes</option></select></div>
+<div><label>Entry screenshot</label><input type="file" id="shot1" accept="image/*"></div><div><label>Exit screenshot</label><input type="file" id="shot2" accept="image/*"></div>
+<div class="full"><label>Why did I enter?</label><textarea id="reason"></textarea></div><div class="full"><label>Lesson / mistake</label><textarea id="lesson"></textarea></div>
+</div><div class="actions"><button>Save Trade</button><button type="button" onclick="show('dash')">Cancel</button></div></form></div></section>
+
+<section id="calc" class="hidden"><div class="card"><h2>₹25,000 Risk Calculator</h2><div class="form">
+<div><label>Capital</label><input id="capital" type="number" value="25000"></div><div><label>Risk %</label><input id="riskpct" type="number" value="1" step=".1"></div><div><label>Entry</label><input id="ce" type="number" step="any"></div>
+<div><label>Stop Loss</label><input id="csl" type="number" step="any"></div><div><label>Target</label><input id="ct" type="number" step="any"></div><div><label>Lot size / quantity</label><input id="cqty" type="number" value="1"></div>
+</div><div class="riskbox" id="calcOut">Enter entry and SL.</div></div></section>
+
+<section id="analytics" class="hidden"><div class="card"><h2>Setup Performance</h2><div id="setupTable"></div></div><div class="section card"><h2>Psychology & Execution</h2><div id="psych"></div></div></section>
+
+<section id="review" class="hidden"><div class="card"><h2>Daily Review</h2><div class="form">
+<div><label>Date</label><input type="date" id="rd"></div><div><label>Day P&L</label><input id="rp" type="number"></div><div><label>Execution score 1–10</label><input id="rs" type="number" min="1" max="10"></div>
+<div class="full"><label>Best decision</label><textarea id="rb"></textarea></div><div class="full"><label>Biggest mistake</label><textarea id="rm"></textarea></div><div class="full"><label>Tomorrow's ONE rule</label><textarea id="rt"></textarea></div>
+</div><div class="actions"><button onclick="saveReview()">Save Review</button></div></div><div class="section card"><h2>Past Reviews</h2><div id="reviews"></div></div></section>
+</main>
+
+<script>
+/* V3 Android persistence bridge. On Android, trades/reviews are stored in SQLite
+   through MainActivity. In a normal browser, localStorage remains the fallback. */
+window.__ANDROID_PERSIST__ = !!window.AndroidStore;
+async function storeGet(key){
+  if(window.AndroidStore && AndroidStore.get) return AndroidStore.get(key) || "";
+  return localStorage.getItem(key) || "";
+}
+async function storeSet(key,val){
+  if(window.AndroidStore && AndroidStore.set){ AndroidStore.set(key,val); return; }
+  localStorage.setItem(key,val);
+}
+async function storeRemove(key){
+  if(window.AndroidStore && AndroidStore.remove){ AndroidStore.remove(key); return; }
+  localStorage.removeItem(key);
+}
+</script>
+<script>
+const TK="tjp3_trades",RK="tjp3_reviews",START=25000;let trades=[],reviews=[];const $=x=>document.getElementById(x);
+const today=new Date().toISOString().slice(0,10);$("date").value=$("rd").value=today;
+function show(id){document.querySelectorAll("main>section").forEach(x=>x.classList.add("hidden"));$(id).classList.remove("hidden");document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active",b.dataset.tab===id));render()}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>show(b.dataset.tab));
+function pnl(t){return (t.type==="Call / Long"?t.exit-t.entry:t.entry-t.exit)*t.qty}
+function money(n){return (n>=0?"+":"")+"₹"+n.toFixed(2)}
+function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+function fileData(file){return new Promise(r=>{if(!file)return r("");let fr=new FileReader();fr.onload=()=>r(fr.result);fr.readAsDataURL(file)})}
+$("tradeForm").onsubmit=async e=>{e.preventDefault();let t={id:Date.now(),date:$("date").value,instrument:$("instrument").value,type:$("type").value,entry:+$("entry").value,exit:+$("exit").value,qty:+$("qty").value,sl:+$("sl").value||0,target:+$("target").value||0,setup:$("setup").value,emotion:$("emotion").value,followed:$("followed").value,early:$("early").value,reentry:$("reentry").value,added:$("added").value,movedsl:$("movedsl").value,reason:$("reason").value,lesson:$("lesson").value,shot1:await fileData($("shot1").files[0]),shot2:await fileData($("shot2").files[0])};t.pnl=pnl(t);let risk=t.sl?Math.abs(t.entry-t.sl)*t.qty:0;t.risk=risk;t.r= risk? t.pnl/risk:0;trades.unshift(t);storeSet(TK,JSON.stringify(trades));e.target.reset();$("date").value=today;show("dash")};
+["capital","riskpct","ce","csl","ct","cqty"].forEach(id=>$(id).addEventListener("input",calc));
+function calc(){let c=+$("capital").value||25000,p=+$("riskpct").value||1,e=+$("ce").value,s=+$("csl").value,t=+$("ct").value,q=+$("cqty").value||1,max=c*p/100,d=Math.abs(e-s),qty=d?Math.floor(max/d):0,risk=d*q,reward=t?Math.abs(t-e)*q:0;let rr=risk?reward/risk:0;$("calcOut").innerHTML=`Allowed risk: <b>₹${max.toFixed(2)}</b><br>SL distance: <b>${d.toFixed(2)}</b><br>Suggested quantity: <b>${qty}</b><br>Your entered quantity risk: <b class="${risk>max?'red':'green'}">₹${risk.toFixed(2)}</b>${t?`<br>Potential reward: <b>₹${reward.toFixed(2)}</b> · R:R <b>${rr.toFixed(2)}R</b>`:""}`};calc();
+function row(t){return `<div class="trade"><div><b>${esc(t.instrument)}</b> <span class="pill">${t.type}</span> <span class="pill">${esc(t.setup)}</span><div class="small muted">${t.date} · ${t.entry} → ${t.exit} · Qty ${t.qty}</div><div class="small muted">${t.emotion} · Early ${t.early} · Re-entry ${t.reentry} · Added ${t.added}</div>${t.shot1?`<div class="small"><a href="${t.shot1}" target="_blank">Entry screenshot</a>${t.shot2?` · <a href="${t.shot2}" target="_blank">Exit screenshot</a>`:""}</div>`:""}</div><div class="${t.pnl>=0?'green':'red'}"><b>${money(t.pnl)}</b><br><button class="danger small" onclick="del(${t.id})">Delete</button></div></div>`}
+function del(id){trades=trades.filter(t=>t.id!==id);storeSet(TK,JSON.stringify(trades));render()}
+function render(){let total=trades.reduce((a,t)=>a+t.pnl,0),wins=trades.filter(t=>t.pnl>0).length,loss=trades.filter(t=>t.pnl<0).length,eq=START+total,early=trades.filter(t=>t.early==="Yes").length,re=trades.filter(t=>t.reentry==="Yes").length,add=trades.filter(t=>t.added==="Yes").length,moved=trades.filter(t=>t.movedsl==="Yes").length,follow=trades.filter(t=>t.followed==="Yes").length;
+let dd=0,peak=START,run=START;trades.slice().reverse().forEach(t=>{run+=t.pnl;peak=Math.max(peak,run);dd=Math.max(dd,peak-run)});$("stats").innerHTML=[["Capital",money(START),""],["Current Equity",money(eq),eq>=START?"green":"red"],["Net P&L",money(total),total>=0?"green":"red"],["Win Rate",trades.length?(wins/trades.length*100).toFixed(1)+"%":"0%",""],["Max Drawdown","₹"+dd.toFixed(2),"red"],["Trades",trades.length,""],["Avg Trade",money(trades.length?total/trades.length:0),total>=0?"green":"red"],["Plan Followed",trades.length?(follow/trades.length*100).toFixed(0)+"%":"0%",""]];
+$("recent").innerHTML=trades.slice(0,8).map(row).join("")||'<div class="muted">No trades yet.</div>';
+$("behaviour").innerHTML=`<div class="grid"><div><span class="label">Early exits</span><div class="big red">${early}</div></div><div><span class="label">Re-entry after SL</span><div class="big red">${re}</div></div><div><span class="label">Added lots after loss</span><div class="big red">${add}</div></div><div><span class="label">Moved SL</span><div class="big yellow">${moved}</div></div></div><div class="section small muted">Your app tracks execution mistakes separately from P&L so a profitable bad trade doesn't get mistaken for a good trade.</div>`;
+let setups=[...new Set(trades.map(t=>t.setup))];$("setupTable").innerHTML=trades.length?`<table><tr><th>Setup</th><th>Trades</th><th>Win%</th><th>Net P&L</th><th>Avg R</th></tr>${setups.map(s=>{let a=trades.filter(t=>t.setup===s),p=a.reduce((x,t)=>x+t.pnl,0),w=a.filter(t=>t.pnl>0).length,r=a.filter(t=>t.r).reduce((x,t)=>x+t.r,0);return `<tr><td>${esc(s)}</td><td>${a.length}</td><td>${(w/a.length*100).toFixed(0)}%</td><td class="${p>=0?'green':'red'}">${money(p)}</td><td>${a.filter(t=>t.r).length?(r/a.filter(t=>t.r).length).toFixed(2):"—"}R</td></tr>`}).join("")}</table>`:'<div class="muted">Add trades to see setup statistics.</div>';
+$("psych").innerHTML=`Early exits: <b>${early}</b> · Re-entry after SL: <b>${re}</b> · Added lots: <b>${add}</b> · SL moved: <b>${moved}</b> · Rule violations: <b>${trades.filter(t=>t.followed==="No").length}</b>`;
+$("reviews").innerHTML=reviews.map(r=>`<div class="trade"><div><b>${r.date}</b> · P&L ₹${r.pnl} · Execution ${r.score}/10<div class="small muted">${esc(r.mistake)}</div><div class="quote small">Tomorrow: ${esc(r.tomorrow)}</div></div><button class="danger" onclick="dr(${r.id})">Delete</button></div>`).join("")||'<div class="muted">No reviews yet.</div>';draw();
+}
+function draw(){let c=$("equity"),x=c.getContext("2d"),w=c.width=c.clientWidth*devicePixelRatio,h=c.height=c.clientHeight*devicePixelRatio;x.clearRect(0,0,w,h);let a=[START],v=START;trades.slice().reverse().forEach(t=>{v+=t.pnl;a.push(v)});let min=Math.min(...a),max=Math.max(...a),pad=25; x.beginPath();a.forEach((n,i)=>{let px=pad+i*(w-2*pad)/Math.max(1,a.length-1),py=h-pad-(n-min)/Math.max(1,max-min)*(h-2*pad);i?x.lineTo(px,py):x.moveTo(px,py)});x.strokeStyle="#6ea8fe";x.lineWidth=3;x.stroke();x.fillStyle="#91a1bb";x.font=12*devicePixelRatio+"px system-ui";x.fillText("₹"+min.toFixed(0),5,h-5);x.fillText("₹"+max.toFixed(0),5,15)}
+function saveReview(){let r={id:Date.now(),date:$("rd").value,pnl:$("rp").value||0,score:$("rs").value||0,best:$("rb").value,mistake:$("rm").value,tomorrow:$("rt").value};reviews.unshift(r);storeSet(RK,JSON.stringify(reviews));$("rb").value=$("rm").value=$("rt").value="";render()}
+function dr(id){reviews=reviews.filter(r=>r.id!==id);storeSet(RK,JSON.stringify(reviews));render()}
+async function bootV3(){
+  try {
+    trades=JSON.parse(await storeGet(TK)||"[]");
+    reviews=JSON.parse(await storeGet(RK)||"[]");
+  } catch(e){ trades=[]; reviews=[]; }
+  render();
+}
+bootV3();
+window.addEventListener("resize",draw);
+</script></body></html>
